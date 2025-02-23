@@ -1,7 +1,12 @@
-// scripts/check-cdn-usage.js
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
+// scripts/check-cdn-usage.mjs
+import fs from "fs";
+import path from "path";
+import { execSync } from "child_process";
+import { fileURLToPath } from "url";
+
+// Fix __dirname equivalent in ES Module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configuration
 const CDN_BASE_URL = "https://image-cdn.xyz.in";
@@ -14,7 +19,7 @@ const PATTERNS = {
 };
 
 // Get changed files in the PR
-function getChangedFiles() {
+async function getChangedFiles() {
   try {
     // If running in GitHub Actions (PR)
     if (process.env.GITHUB_EVENT_PATH) {
@@ -136,19 +141,21 @@ function printResults(results) {
 
 // Main execution
 try {
-  const changedFiles = getChangedFiles();
-  console.log("Checking files:", changedFiles);
+  (async () => {
+    const changedFiles = await getChangedFiles();
+    console.log("Checking files:", changedFiles);
 
-  const results = changedFiles
-    .filter((file) => fs.existsSync(file)) // Ensure file exists
-    .map((file) => ({
-      file,
-      violations: checkFileForCDNUsage(file),
-    }))
-    .filter((result) => result.violations.length > 0);
+    const results = changedFiles
+      .filter((file) => fs.existsSync(file)) // Ensure file exists
+      .map((file) => ({
+        file,
+        violations: checkFileForCDNUsage(file),
+      }))
+      .filter((result) => result.violations.length > 0);
 
-  const passed = printResults(results);
-  process.exit(passed ? 0 : 1);
+    const passed = printResults(results);
+    process.exit(passed ? 0 : 1);
+  })();
 } catch (error) {
   console.error("Error while checking CDN usage:", error);
   process.exit(1);
