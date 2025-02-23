@@ -24,6 +24,9 @@ jobs:
           node-version: "18"
           cache: "npm"
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Run CDN check script
         run: node check-cdn-usage.js
 
