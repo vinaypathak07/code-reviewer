@@ -8,8 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
+const PUB_DIR = "public";
 const SRC_DIR = "src";
-const IMAGES_DIR = path.join(SRC_DIR, "images");
+// const IMAGES_DIR = path.join(SRC_DIR, "images");
 const VALID_EXTENSIONS = [".js", ".jsx", ".scss", ".css"];
 const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp"];
 
@@ -95,8 +96,8 @@ async function main() {
     console.log("🔍 Scanning for unused images...");
 
     // Get all images and code files
-    const images = getImageFiles(IMAGES_DIR);
-    const codeFiles = getCodeFiles(SRC_DIR, IMAGES_DIR);
+    const images = getImageFiles(PUB_DIR);
+    const codeFiles = getCodeFiles(SRC_DIR, PUB_DIR);
 
     // Find unused images
     const unusedImages = new Set();
