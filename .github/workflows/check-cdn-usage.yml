@@ -1,0 +1,43 @@
+# .github/workflows/cdn-check.yml
+name: Check CDN Usage
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-cdn:
+    name: Check CDN Usage in Changed Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run CDN check script
+        run: node check-cdn-usage.js
+
+      - name: Comment PR on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ CDN check failed! Some images are not using the required CDN URL pattern. Please check the workflow logs for details.'
+            })
