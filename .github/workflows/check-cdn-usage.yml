@@ -25,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Run CDN check script
-        run: node scripts/check-cdn-usage.js
+        run: node check-cdn-usage.js
 
       - name: Comment PR on failure
         if: failure()
