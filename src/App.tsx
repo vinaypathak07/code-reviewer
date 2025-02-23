@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="flex h-full w-full items-center justify-center overflow-hidden">
-      <img alt="check cdn" src="/HEIST.png" />
+      {/* <img alt="check cdn" src="/HEIST.png" /> */}
       <Editor
         isGenerating={isGenerating}
         onGenerateReview={handleGenerateReview}

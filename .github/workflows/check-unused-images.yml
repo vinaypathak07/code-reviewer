@@ -1,28 +1,28 @@
-# name: Check Unused Images
+name: Check Unused Images
 
-# on:
-#   push:
-#     branches: [main, master]
-#   pull_request:
-#     branches: [main, master]
-#   workflow_dispatch:
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
 
-# jobs:
-#   check-unused-images:
-#     runs-on: ubuntu-latest
+jobs:
+  check-unused-images:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: "20"
-#           cache: "npm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
 
-#       - name: Install dependencies
-#         run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-#       - name: Run unused images check
-#         run: node detect-unused-images.js
+      - name: Run unused images check
+        run: node detect-unused-images.js
